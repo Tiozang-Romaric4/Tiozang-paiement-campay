@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
@@ -34,7 +35,10 @@ app.post('/api/payer', async (req, res) => {
   }
 
   // Le numéro doit être au format international sans le "+", ex: 2376XXXXXXXX
-  const cleanPhone = String(phone).replace(/\D/g, '');
+  let cleanPhone = String(phone).replace(/\D/g, '');
+  if (!cleanPhone.startsWith('237')) {
+    cleanPhone = '237' + cleanPhone;
+  }
 
   try {
     const response = await fetch(`${CAMPAY_BASE_URL}/collect/`, {
